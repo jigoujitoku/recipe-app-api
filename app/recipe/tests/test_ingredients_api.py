@@ -50,20 +50,20 @@ class PrivateIngredientsApiTests(TestCase):
         self.assertEqual(res.data, serializer.data)
 
     def test_ingredients_limited_to_user(self):
-        """Test that only the ing for the auth user are returned"""
+        """Test that only the ingredient for the auth user are returned"""
         user2 = get_user_model().objects.create_user(
             'other@gmail.com',
             'testpass'
         )
         Ingredient.objects.create(user=user2, name='Vinegar')
 
-        ing = Ingredient.objects.create(user=self.user, name='Tumeric')
+        ingredient = Ingredient.objects.create(user=self.user, name='Tumeric')
 
         res = self.client.get(INGREDIENTS_URL)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(len(res.data), 1)
-        self.assertEqual(res.data[0]['name'], ing.name)
+        self.assertEqual(res.data[0]['name'], ingredient.name)
 
     def test_create_ingredient_successful(self):
         """Test creating a new ingredient"""
